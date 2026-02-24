@@ -1,0 +1,125 @@
+---
+title: "A5 — World Development Indicators (2022)"
+author: "Ihan Do"
+date: 2026-02-23
+format:
+  revealjs:
+    theme: dark
+    transition: slide
+execute:
+  echo: false
+bibliography: references.bib
+---
+
+## Introduction
+
+- This slide deck summarizes an analysis of World Development Indicators (2022).
+- Data source: World Bank @worldbank
+- Prior work links economic development and life expectancy @preston1975
+
+---
+
+## Indicators Used
+
+- GDP per capita (`gdp_per_capita`)
+- Life expectancy (`life_expectancy`)
+- Unemployment rate (`unemployment_rate`)
+
+---
+
+## Load Data
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("data/wdi.csv")
+df.head()
+```
+
+---
+
+## GDP vs Life Expectancy
+
+```{python}
+#| label: fig-gdp-life-slides
+#| fig-cap: "GDP per Capita vs Life Expectancy (2022)"
+#| fig-pos: H
+
+plt.scatter(df["gdp_per_capita"], df["life_expectancy"])
+plt.xlabel("GDP per Capita")
+plt.ylabel("Life Expectancy")
+plt.title("GDP vs Life Expectancy (2022)")
+plt.show()
+```
+
+**Takeaway:** Higher GDP per capita is generally associated with higher life expectancy.
+
+---
+
+## Top 10 Countries by GDP per Capita
+
+```{python}
+#| label: fig-top-gdp-slides
+#| fig-cap: "Top 10 Countries by GDP per Capita (2022)"
+#| fig-pos: H
+
+top = df.sort_values("gdp_per_capita", ascending=False).head(10)
+
+plt.barh(top["country"], top["gdp_per_capita"])
+plt.xlabel("GDP per Capita")
+plt.ylabel("Country")
+plt.title("Top 10 GDP per Capita (2022)")
+plt.gca().invert_yaxis()
+plt.show()
+```
+
+**Takeaway:** GDP per capita varies substantially across countries.
+
+---
+
+## Unemployment Rate Distribution
+
+```{python}
+#| label: fig-unemp-slides
+#| fig-cap: "Distribution of Unemployment Rates Across Countries (2022)"
+#| fig-pos: H
+
+plt.hist(df["unemployment_rate"].dropna(), bins=30)
+plt.xlabel("Unemployment rate (%)")
+plt.ylabel("Number of countries")
+plt.title("Unemployment Rate Distribution (2022)")
+plt.show()
+```
+
+**Takeaway:** Unemployment rates show wide variation across countries.
+
+---
+
+## Summary Statistics
+
+```{python}
+#| label: tbl-summary-slides
+#| tbl-cap: "Summary Statistics for GDP per Capita and Life Expectancy (2022)"
+
+df[["gdp_per_capita", "life_expectancy"]].describe().round(2)
+```
+
+---
+
+## Key Findings
+
+- Higher GDP per capita is associated with longer life expectancy
+- There is significant variation in GDP per capita across countries
+- Unemployment rates vary widely across countries in 2022
+- Economic development strongly influences health outcomes
+
+---
+
+## Conclusion
+
+This analysis demonstrates clear relationships between economic and health indicators using 2022 WDI data.
+
+---
+
+## References
